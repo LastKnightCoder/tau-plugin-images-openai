@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Input } from "@tau/ui";
+import { Button, Input, SettingRow } from "@tau/ui";
 import { definePlugin, type PluginSettingsProps } from "@tau/plugins";
 import { createImageInstance } from "./provider";
 
@@ -37,37 +37,41 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
     }
   };
   return (
-    <div className="flex flex-col gap-3">
-      <label className="flex flex-col gap-1">
-        模型地址
+    <>
+      <SettingRow title="模型地址">
         <Input
+          className="w-full"
           value={baseUrl}
           onChange={(event) => setBaseUrl(event.target.value)}
           spellCheck={false}
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        API Key
+      </SettingRow>
+      <SettingRow title="API Key">
         <Input
+          className="w-full"
           type="password"
           value={apiKey}
           onChange={(event) => setApiKey(event.target.value)}
           autoComplete="off"
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        模型名称
+      </SettingRow>
+      <SettingRow title="模型名称">
         <Input
+          className="w-full"
           value={model}
           onChange={(event) => setModel(event.target.value)}
           spellCheck={false}
         />
-      </label>
-      <Button variant="secondary" loading={saving} onClick={() => void save()}>
-        保存连接配置
-      </Button>
-      {message && <p role="status">{message}</p>}
-    </div>
+      </SettingRow>
+      <SettingRow title="">
+        <div className="flex flex-col gap-2">
+          <Button variant="secondary" loading={saving} onClick={() => void save()}>
+            保存连接配置
+          </Button>
+          {message && <p className="text-tau-meta" role="status">{message}</p>}
+        </div>
+      </SettingRow>
+    </>
   );
 }
 
