@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Button, Input, SettingRow } from "@tau/ui";
+import { useEffect, useRef, useState } from "react";
+import { Input, SettingRow } from "@tau/ui";
 import { definePlugin, type PluginSettingsProps } from "@tau/plugins";
 import { createImageInstance } from "./provider";
 
 declare const __PLUGIN_META__: { id: string; name: string; version: string };
+
+const SAVE_DELAY_MS = 500;
 
 function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
   const value = imageConfig?.value;
@@ -18,23 +20,43 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
     typeof initial.apiKey === "string" ? initial.apiKey : "",
   );
   const [model, setModel] = useState(imageConfig?.modelId || "gpt-image-2");
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
-  if (!imageConfig) return null;
-  const save = async () => {
-    setSaving(true);
-    setMessage("");
+  const [error, setError] = useState("");
+  const edited = useRef(false);
+  const saveRef = useRef(imageConfig?.save);
+  saveRef.current = imageConfig?.save;
+  const pending = useRef<(() => void) | null>(null);
+
+  // 输入停顿后自动保存；未改动过不写回，避免打开即覆盖已存配置
+  useEffect(() => {
+    if (!edited.current) return;
+    const config = { baseUrl: baseUrl.trim(), apiKey: apiKey.trim() };
+    const modelId = model.trim();
     try {
-      const config = { baseUrl: baseUrl.trim(), apiKey: apiKey.trim() };
-      createImageInstance(config, model, context.fetch);
-      await imageConfig.save(config, model.trim());
-      if (!context.signal.aborted) setMessage("已保存");
-    } catch (error) {
-      if (!context.signal.aborted)
-        setMessage(error instanceof Error ? error.message : String(error));
-    } finally {
-      if (!context.signal.aborted) setSaving(false);
+      createImageInstance(config, modelId, context.fetch);
+    } catch (reason) {
+      pending.current = null;
+      setError(reason instanceof Error ? reason.message : String(reason));
+      return;
     }
+    setError("");
+    const flush = () => {
+      pending.current = null;
+      saveRef.current?.(config, modelId).catch((reason: unknown) => {
+        if (!context.signal.aborted)
+          setError(reason instanceof Error ? reason.message : String(reason));
+      });
+    };
+    pending.current = flush;
+    const timer = setTimeout(flush, SAVE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [baseUrl, apiKey, model, context]);
+  // 停顿期内收起或切走时立即写入，不丢最后一次修改
+  useEffect(() => () => pending.current?.(), []);
+
+  if (!imageConfig) return null;
+  const edit = (setter: (next: string) => void) => (next: string) => {
+    edited.current = true;
+    setter(next);
   };
   return (
     <>
@@ -42,7 +64,7 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
         <Input
           className="w-full"
           value={baseUrl}
-          onChange={(event) => setBaseUrl(event.target.value)}
+          onChange={(event) => edit(setBaseUrl)(event.target.value)}
           spellCheck={false}
         />
       </SettingRow>
@@ -51,7 +73,7 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
           className="w-full"
           type="password"
           value={apiKey}
-          onChange={(event) => setApiKey(event.target.value)}
+          onChange={(event) => edit(setApiKey)(event.target.value)}
           autoComplete="off"
         />
       </SettingRow>
@@ -59,18 +81,15 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
         <Input
           className="w-full"
           value={model}
-          onChange={(event) => setModel(event.target.value)}
+          onChange={(event) => edit(setModel)(event.target.value)}
           spellCheck={false}
         />
       </SettingRow>
-      <SettingRow title="">
-        <div className="flex flex-col gap-2">
-          <Button variant="secondary" loading={saving} onClick={() => void save()}>
-            保存连接配置
-          </Button>
-          {message && <p className="text-tau-meta" role="status">{message}</p>}
-        </div>
-      </SettingRow>
+      {error && (
+        <p className="text-tau-meta text-danger px-3 pb-2" role="alert">
+          {error}
+        </p>
+      )}
     </>
   );
 }
