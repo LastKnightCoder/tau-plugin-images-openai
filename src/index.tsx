@@ -62,7 +62,7 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
     <>
       <SettingRow title="模型地址">
         <Input
-          className="w-full"
+          wrapperClassName="w-[300px] max-w-full"
           value={baseUrl}
           onChange={(event) => edit(setBaseUrl)(event.target.value)}
           spellCheck={false}
@@ -70,7 +70,7 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
       </SettingRow>
       <SettingRow title="API Key">
         <Input
-          className="w-full"
+          wrapperClassName="w-[300px] max-w-full"
           type="password"
           value={apiKey}
           onChange={(event) => edit(setApiKey)(event.target.value)}
@@ -79,7 +79,7 @@ function ImageSettings({ imageConfig, context }: PluginSettingsProps) {
       </SettingRow>
       <SettingRow title="模型名称">
         <Input
-          className="w-full"
+          wrapperClassName="w-[300px] max-w-full"
           value={model}
           onChange={(event) => edit(setModel)(event.target.value)}
           spellCheck={false}
