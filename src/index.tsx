@@ -102,13 +102,13 @@ export default definePlugin({
         throw new Error("请升级到支持图片插件接口的 Tau 客户端");
       context.images.register({
         id: context.pluginId,
-        name: "OpenAI 兼容图片",
+        name: "OpenAI 图片",
         create: (config, modelId) =>
           createImageInstance(config, modelId, context.fetch),
       });
       context.settings.register({
         id: "connection",
-        title: "OpenAI 兼容图片",
+        title: "OpenAI 图片",
         target: "images",
         component: ImageSettings,
       });
