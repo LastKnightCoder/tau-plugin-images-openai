@@ -2,20 +2,12 @@
   "id": "tau.images-openai",
   "name": "OpenAI 图片",
   "description": "用 OpenAI 图像模型生成图片，或在参考图上修改，结果直接用在聊天、文档和白板里。",
-  "categories": [
-    "ai"
-  ],
-  "keywords": [
-    "图片生成",
-    "OpenAI"
-  ],
-  "version": "0.2.5",
-  "requires": [
-    "fetch"
-  ],
+  "categories": ["ai"],
+  "keywords": ["图片生成", "OpenAI"],
+  "version": "0.2.6",
   "targets": {
     "desktop": {
-      "minAppVersion": "0.59.2"
+      "minAppVersion": "0.59.4"
     }
   }
 }
