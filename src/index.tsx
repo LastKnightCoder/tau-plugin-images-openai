@@ -18,7 +18,13 @@ export default definePlugin({
         id: "connection",
         title: "OpenAI 图片",
         target: "images",
-        models: [{ id: "gpt-image-2" }],
+        models: [
+          { id: "gpt-image-2" },
+          { id: "gpt-image-2.5-sunburst" },
+          { id: "gpt-image-2.5-flare" },
+          { id: "gpt-image-2.6-sunburst" },
+          { id: "gpt-image-2.6-flare" },
+        ],
         form: {
           groups: [{
             title: "连接",
