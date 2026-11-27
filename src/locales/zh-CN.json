@@ -1,0 +1,7 @@
+{
+  "connection.title": "连接",
+  "connection.description": "提示词与参考图会发送到所配置的模型服务。",
+  "apiKey.label": "API Key",
+  "baseUrl.label": "模型地址",
+  "baseUrl.description": "兼容 OpenAI 图片接口的服务可改为对应地址"
+}

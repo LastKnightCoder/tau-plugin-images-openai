@@ -1,0 +1,7 @@
+{
+  "connection.title": "Connection",
+  "connection.description": "Prompts and reference images are sent to the configured model service.",
+  "apiKey.label": "API Key",
+  "baseUrl.label": "Model URL",
+  "baseUrl.description": "For an OpenAI-compatible image service, enter its endpoint URL"
+}

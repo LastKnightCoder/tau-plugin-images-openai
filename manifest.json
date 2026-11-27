@@ -4,16 +4,29 @@
   "description": "用 OpenAI 图像模型生成图片，或在参考图上修改，结果直接用在聊天、文档和白板里。",
   "categories": ["ai"],
   "keywords": ["图片生成", "OpenAI"],
-  "version": "0.2.12",
+  "i18n": {
+    "zh-TW": {
+      "name": "OpenAI 圖片",
+      "description": "使用 OpenAI 圖像模型生成圖片，或以參考圖進行修改，結果可直接用於對話、文件與白板。",
+      "keywords": ["圖片生成", "OpenAI"]
+    },
+    "en-US": {
+      "name": "OpenAI Images",
+      "description": "Generate images or edit reference images with OpenAI image models for use in chat, documents, and whiteboards.",
+      "keywords": ["image generation", "image editing", "OpenAI"]
+    }
+  },
+  "locales": ["zh-CN", "zh-TW", "en-US"],
+  "version": "0.2.13",
   "targets": {
     "desktop": {
-      "minAppVersion": "0.60.2"
+      "minAppVersion": "0.68.0"
     },
     "android": {
-      "minAppVersion": "0.2.16"
+      "minAppVersion": "0.6.0"
     },
     "ios": {
-      "minAppVersion": "0.2.16"
+      "minAppVersion": "0.6.0"
     }
   }
 }
