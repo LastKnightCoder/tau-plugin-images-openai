@@ -17,16 +17,16 @@
     }
   },
   "locales": ["zh-CN", "zh-TW", "en-US"],
-  "version": "0.2.13",
+  "version": "0.2.14",
   "targets": {
     "desktop": {
       "minAppVersion": "0.68.0"
     },
     "android": {
-      "minAppVersion": "0.6.0"
+      "minAppVersion": "0.7.0"
     },
     "ios": {
-      "minAppVersion": "0.6.0"
+      "minAppVersion": "0.7.0"
     }
   }
 }
